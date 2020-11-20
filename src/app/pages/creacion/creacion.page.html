@@ -1,0 +1,27 @@
+<app-header title="Creacion"></app-header>
+
+<ion-content>
+
+<form #formulario="ngForm" (ngSubmit)="onSubmitTemplate()">
+<ion-list>
+<ion-item>
+  <ion-label>Fecha:</ion-label>
+  <ion-datetime display-format="DD MM YYYY" placeholder="Select Date" [(ngModel)]="creacion.fecha" name="fecha"></ion-datetime>
+</ion-item>
+
+<ion-item>
+   <ion-label position="floating">Actividad</ion-label>
+   <ion-textarea rows="6" cols="20" [(ngModel)]="creacion.actividad" name="actividad"></ion-textarea>
+</ion-item>
+
+</ion-list>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title></ion-title>
+    <ion-button expand="full" shape="round" type="submit" [disabled]="formulario.invalid" href="listado">Añadir</ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+</form>
+</ion-content>

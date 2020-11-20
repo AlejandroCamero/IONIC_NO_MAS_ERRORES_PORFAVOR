@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+    <ion-back-button text="" icon="arrow-undo-circle-outline" defaultHref="pagina1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Listado de fichas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<br>
+<p>Desde <input type="date" name="fecha1">
+<br>
+<br>
+Hasta <input type="date" name="fecha2"></p>
+<p>
+<ion-list>
+ <ion-item>
+ <ion-label><u>Día</u></ion-label>
+ <ion-datetime value="2020-11-15"></ion-datetime>
+ </ion-item>
+ </ion-list>
+
+ <ion-list>
+ <ion-item>
+ <ion-label><u>Actividad</u></ion-label>
+ <ion-label>Partido de pádel</ion-label>
+ </ion-item>
+ </ion-list>
+</p>
+
+<ion-button size="large" routerLink="/creacion">
+<ion-icon name="add-circle-outline" size="large"></ion-icon>
+</ion-button>
+</ion-content>

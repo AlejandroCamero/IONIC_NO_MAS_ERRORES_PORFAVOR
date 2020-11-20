@@ -1,0 +1,44 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Gestión de Fichas
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+ <ion-content [fullscreen]="true">
+    <ion-card href="listado">
+      <img src="assets/img/listado.png"/>
+      <ion-card-content>
+        <ion-card-title >
+        Listado de Fichas
+        </ion-card-title>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card href="creacion">
+      <img src="assets/img/añadir.jpg"/>
+      <ion-card-content>
+        <ion-card-title>
+        Creación de Fichas
+        </ion-card-title>
+        <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+            <ion-fab-button>
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card href="asistencia">
+      <img src="assets/img/calendar.png"/>
+      <ion-card-content>
+        <ion-card-title>
+        Asistencia
+        </ion-card-title>
+      </ion-card-content>
+    </ion-card>
+
+
+</ion-content>
