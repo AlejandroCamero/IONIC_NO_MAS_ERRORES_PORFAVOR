@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-asistencia',
@@ -15,6 +16,20 @@ export class AsistenciaPage implements OnInit {
   };
   selectedDate = new Date();
 
+  constructor(private db: AngularFirestore,) {
+    this.db.collection(`events`).snapshotChanges().subscribe(colSnap => {
+      this.eventSource = [];
+      colSnap.forEach(snap => {
+        let event:any = snap.payload.doc.data();
+        event.id = snap.payload.doc.id;
+        event.startTime = event.startTime.toDate();
+        event.endTime = event.endTime.toDate();
+        console.log(event);
+        this.eventSource.push(event);
+      });
+    });
+  }
+
   addNewEvent() {
     let start = this.selectedDate;
     let end = this.selectedDate;
@@ -26,6 +41,8 @@ export class AsistenciaPage implements OnInit {
       endTime: end,
       allDay: false,
     };
+
+    this.db.collection(`events`).add(event);
   }
 
   onViewTitleChanged(title) {

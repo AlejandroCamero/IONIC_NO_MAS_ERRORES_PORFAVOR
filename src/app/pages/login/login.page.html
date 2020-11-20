@@ -5,17 +5,16 @@
     <ion-label>
       Email
     </ion-label>
-    <ion-input type="text" ></ion-input>
+    <ion-input type="text" [(ngModel)]="email" name="email"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>
       Contraseña
     </ion-label>
-  <ion-input type="text"></ion-input>
+  <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
   </ion-item>
   <ion-item-divider>
-    <ion-button size="medium"  href="/index">Iniciar Sesión</ion-button>
-    
+    <ion-button size="medium" (click)="OnSubmitLogin()" expand="block">Inicio Sesion</ion-button>
     <ion-button size="medium" href="/register">Registro</ion-button>
   </ion-item-divider>
 </ion-content>
