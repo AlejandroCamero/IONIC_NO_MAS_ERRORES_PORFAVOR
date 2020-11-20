@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { title } from 'process';
 
 @Component({
   selector: 'app-creacion',
@@ -7,8 +6,6 @@ import { title } from 'process';
   styleUrls: ['./creacion.page.scss'],
 })
 export class CreacionPage implements OnInit {
-
-  @Input=title;
 
   constructor() { }
 
