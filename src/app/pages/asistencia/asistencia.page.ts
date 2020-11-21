@@ -17,7 +17,7 @@ export class AsistenciaPage implements OnInit {
   selectedDate = new Date();
 
   constructor(private db: AngularFirestore,) {
-    this.db.collection(`events`).snapshotChanges().subscribe(colSnap => {
+    this.db.collection(`faltas`).snapshotChanges().subscribe(colSnap => {
       this.eventSource = [];
       colSnap.forEach(snap => {
         let event:any = snap.payload.doc.data();
@@ -30,19 +30,34 @@ export class AsistenciaPage implements OnInit {
     });
   }
 
-  addNewEvent() {
+  addFaltaJustificada() {
     let start = this.selectedDate;
     let end = this.selectedDate;
     end.setMinutes(end.getMinutes() + 60);
 
     let event = {
-      title: 'Event #' + start.getMinutes(),
+      title: 'Falta Justificada ',
       startTime: start,
       endTime: end,
       allDay: false,
     };
 
-    this.db.collection(`events`).add(event);
+    this.db.collection(`faltas`).add(event);
+  }
+
+  addFaltaInjustificada() {
+    let start = this.selectedDate;
+    let end = this.selectedDate;
+    end.setMinutes(end.getMinutes() + 60);
+
+    let event = {
+      title: 'Falta Injustificada ',
+      startTime: start,
+      endTime: end,
+      allDay: false,
+    };
+
+    this.db.collection(`faltas`).add(event);
   }
 
   onViewTitleChanged(title) {
