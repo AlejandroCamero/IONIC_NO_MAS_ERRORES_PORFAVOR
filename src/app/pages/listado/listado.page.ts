@@ -9,6 +9,7 @@ export class ListadoPage implements OnInit {
 
   constructor() { }
 
+  
   ngOnInit() {
   }
 
