@@ -1,7 +1,12 @@
-<app-headerwithoutback titulo="Indice"></app-headerwithoutback>
-
+<ion-header no-border trasnlucent>
+  <ion-toolbar color="light">
+  <ion-title text-capitalize>ÍNDICE</ion-title>
+  <ion-back-button text="" icon="close-circle-outline" defaultHref="login" slot="end"></ion-back-button>
+  </ion-toolbar>
+</ion-header>
 
  <ion-content [fullscreen]="true">
+
     <ion-card href="listado" color="black">
       <img src="assets/img/listado.png"/>
       <ion-card-content>

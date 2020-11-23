@@ -11,5 +11,11 @@ export class IndexPage implements OnInit {
 
   ngOnInit() {
   }
+  // async logout(){
+  //     this.menu.enable(false);
+  //     localStorage.clear(); //becausae i have information from user
+  //     this.backToWelcome();
+  //   }
+  
 
 }

@@ -2,19 +2,18 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { IonicModule } from '@ionic/angular';
-import { HeaderwithoutbackComponent } from './headerwithoutback/headerwithoutback.component';
+
 
 
 
 @NgModule({
-  declarations: [HeaderComponent,HeaderwithoutbackComponent],
+  declarations: [HeaderComponent],
   imports: [
     CommonModule,
     IonicModule
   ],
   exports: [
-  HeaderComponent,
-  HeaderwithoutbackComponent
+  HeaderComponent
  ]
 })
 export class ComponentsModule { }
