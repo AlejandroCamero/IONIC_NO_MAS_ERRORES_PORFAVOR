@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthService} from '../../services/auth.service';
+import {User} from '../../shared/user.class';
 
 @Component({
   selector: 'app-register',
@@ -7,9 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterPage implements OnInit {
 
-  constructor() { }
+  user:User=new User();
+
+  constructor(private authSvc:AuthService, private router:Router) { }
 
   ngOnInit() {
+  }
+
+  async onRegister(){
+    const user= await this.authSvc.onRegister(this.user);
+    if(user){
+      console.log('Successfully create user');
+      this.router.navigateByUrl('/pagina1');
+    }
   }
 
 }

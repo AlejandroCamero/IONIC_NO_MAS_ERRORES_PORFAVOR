@@ -1,3 +1,4 @@
+import { User } from './../../shared/user.class';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
@@ -7,15 +8,17 @@ import { Router } from '@angular/router';
  styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
- email: string;
- password: string;
- constructor(private authService: AuthService,
- private router: Router) { }
- ngOnInit() {
- }
- OnSubmitLogin() {
- this.authService.login(this.email, this.password).then(res => {
- this.router.navigate(['/index']);
- }).catch(err => alert('Los datos son incorrectos o no existen'));
- }
+    user:User=new User();
+  
+    constructor(private authSvc: AuthService,
+    private router: Router) { }
+    ngOnInit() {
+    }
+    async onLogin() {
+    const user=await this.authSvc.onLogin(this.user)
+    if(user){
+      console.log('Login correcto');
+      this.router.navigateByUrl('/index');
+    }
+  }
 }

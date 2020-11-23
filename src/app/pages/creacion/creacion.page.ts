@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-creacion',
@@ -7,7 +8,21 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CreacionPage implements OnInit {
 
-  constructor() { }
+  eventSource = [];
+
+  constructor(private db: AngularFirestore,) {
+    this.db.collection(`faltas`).snapshotChanges().subscribe(colSnap => {
+      this.eventSource = [];
+      colSnap.forEach(snap => {
+        let event:any = snap.payload.doc.data();
+        event.id = snap.payload.doc.id;
+        event.title = snap.payload.doc.data();
+        event.date = event.startTime.toDate();
+        console.log(event);
+        this.eventSource.push(event);
+      });
+    });
+  }
 
   creacion = {
     fecha: '',
@@ -18,6 +33,13 @@ export class CreacionPage implements OnInit {
   }
 
   onSubmitTemplate() {
+
+    let event = {
+      title: this.creacion.actividad,
+      date: this.creacion.fecha,
+    };
+
+    this.db.collection(`fichas`).add(event);
     console.log('Form submit');
     console.log(this.creacion);
   }
