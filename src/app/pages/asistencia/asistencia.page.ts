@@ -23,6 +23,8 @@ export class AsistenciaPage implements OnInit {
       colSnap.forEach(snap => {
         let event:any = snap.payload.doc.data();
         event.id = snap.payload.doc.id;
+        event.startTime = event.startTime.toDate();
+        event.endTime = event.endTime.toDate();
         console.log(event);
         this.eventSource.push(event);
       });
@@ -30,8 +32,14 @@ export class AsistenciaPage implements OnInit {
   }
 
   addFaltaJustificada() {
+    let start = this.selectedDate;
+    let end = this.selectedDate;
+    end.setMinutes(end.getMinutes() + 60);
+
     let event = {
       title: 'Falta Justificada ',
+      startTime: start,
+      endTime: end,
       allDay: false,
     };
 
@@ -39,17 +47,23 @@ export class AsistenciaPage implements OnInit {
   }
 
   addFaltaInjustificada() {
+    let start = this.selectedDate;
+    let end = this.selectedDate;
+    end.setMinutes(end.getMinutes() + 60);
+
     let event = {
       title: 'Falta Injustificada ',
-      allDay: false,
+      startTime: start,
+      endTime: end,
+      allDay: true,
     };
 
     this.db.collection(`faltas`).add(event);
   }
 
   onViewTitleChanged(title) {
-    console.log(title);
     this.fecha=title;
+    console.log(title);
   }
 
   onEventSelected(event) {

@@ -17,7 +17,6 @@ export class CreacionPage implements OnInit {
         let event:any = snap.payload.doc.data();
         event.id = snap.payload.doc.id;
         event.title = snap.payload.doc.data();
-        event.date = event.startTime.toDate();
         console.log(event);
         this.eventSource.push(event);
       });
