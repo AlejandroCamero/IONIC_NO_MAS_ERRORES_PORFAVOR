@@ -15,8 +15,6 @@ export interface todo{
 
 export class ListadoPage implements OnInit {
 
-  fecha1='';
-  fecha2='';
   public fichas :any = [];
 
   constructor(public authservice : AuthService, public todoservice : TodoService) { }
