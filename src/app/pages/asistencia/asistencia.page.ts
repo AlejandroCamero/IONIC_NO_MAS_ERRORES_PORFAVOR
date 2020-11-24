@@ -8,6 +8,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class AsistenciaPage implements OnInit {
 
+  fecha='';
   eventSource = [];
 
   calendar = {
@@ -48,6 +49,7 @@ export class AsistenciaPage implements OnInit {
 
   onViewTitleChanged(title) {
     console.log(title);
+    this.fecha=title;
   }
 
   onEventSelected(event) {
