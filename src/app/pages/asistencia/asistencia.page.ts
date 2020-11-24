@@ -40,7 +40,7 @@ export class AsistenciaPage implements OnInit {
       title: 'Falta Justificada ',
       startTime: start,
       endTime: end,
-      AllDay: true,
+      allDay: false,
     };
 
     this.db.collection(`faltas`).add(event);
@@ -62,8 +62,8 @@ export class AsistenciaPage implements OnInit {
   }
 
   onViewTitleChanged(title) {
-    console.log(title);
     this.fecha=title;
+    console.log(title);
   }
 
   onEventSelected(event) {
