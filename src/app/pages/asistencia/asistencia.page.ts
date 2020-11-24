@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { AuthService } from './../../services/auth.service';
+import { CalModalPage } from './../cal-modal/cal-modal.page';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { ModalController } from '@ionic/angular';
+import { CalendarComponent } from 'ionic2-calendar';
 
 @Component({
   selector: 'app-asistencia',
@@ -10,81 +14,220 @@ export class AsistenciaPage implements OnInit {
 
   fecha='';
   eventSource = [];
+  viewTitle:string;
+  userUid:string;
+
+  event = {
+    title: '',
+    desc: '',
+    startTime: null,
+    endTime: '',
+    allDay: true
+  };
 
   calendar = {
     mode: 'month',
     currentDate: new Date(),
   };
-  selectedDate = new Date();
 
-  constructor(private db: AngularFirestore,) {
-    this.db.collection(`faltas`).snapshotChanges().subscribe(colSnap => {
-      this.eventSource = [];
-      colSnap.forEach(snap => {
-        let event:any = snap.payload.doc.data();
-        event.id = snap.payload.doc.id;
-        event.startTime = event.startTime.toDate();
-        event.endTime = event.endTime.toDate();
-        console.log(event);
-        this.eventSource.push(event);
-      });
-    });
-  }
+  @ViewChild(CalendarComponent) myCal:CalendarComponent;
 
-  addFaltaJustificada() {
-    let start = this.selectedDate;
-    let end = this.selectedDate;
-    end.setMinutes(end.getMinutes() + 60);
-
-    let event = {
-      title: 'Falta Justificada ',
-      startTime: start,
-      endTime: end,
-      allDay: false,
-    };
-
-    this.db.collection(`faltas`).add(event);
-  }
-
-  addFaltaInjustificada() {
-    let start = this.selectedDate;
-    let end = this.selectedDate;
-    end.setMinutes(end.getMinutes() + 60);
-
-    let event = {
-      title: 'Falta Injustificada ',
-      startTime: start,
-      endTime: end,
-      allDay: true,
-    };
-
-    this.db.collection(`faltas`).add(event);
-  }
-
-  onViewTitleChanged(title) {
-    this.fecha=title;
-    console.log(title);
-  }
-
-  onEventSelected(event) {
-    console.log(event.title);
-  }
-
-  onTimeSelected(ev) {
-    console.log('Selected time: ' + ev.selectedTime + ', hasEvents: ' +
-      (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
-    this.selectedDate = ev.selectedTime;
-  }
-
-  onCurrentDateChanged(event: Date) {
-    console.log('current date change: ' + event);
-  }
-
-  onRangeChanged(ev) {
-    console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
+  constructor(private modalCtrl: ModalController,private db: AngularFirestore, private authservice: AuthService) {
+  
   }
 
   ngOnInit() {
+    this.authservice.getUserAuth().subscribe(user=>{
+      this.userUid=user.uid;
+    });
   }
 
+  next(){
+    this.myCal.slideNext();
+  }
+
+  back(){
+    this.myCal.slidePrev();
+  }
+
+  onViewTitleChanged(title){
+    this.viewTitle=title;
+  }
+
+  createRandomEvents() {
+    var events = [];
+    for (var i = 0; i < 50; i += 1) {
+      var date = new Date();
+      var eventType = Math.floor(Math.random() * 2);
+      var startDay = Math.floor(Math.random() * 90) - 45;
+      var endDay = Math.floor(Math.random() * 2) + startDay;
+      var startTime;
+      var endTime;
+      if (eventType === 0) {
+        startTime = new Date(
+          Date.UTC(
+            date.getUTCFullYear(),
+            date.getUTCMonth(),
+            date.getUTCDate() + startDay
+          )
+        );
+        if (endDay === startDay) {
+          endDay += 1;
+        }
+        endTime = new Date(
+          Date.UTC(
+            date.getUTCFullYear(),
+            date.getUTCMonth(),
+            date.getUTCDate() + endDay
+          )
+        );
+        events.push({
+          title: 'All Day - ' + i,
+          startTime: startTime,
+          endTime: endTime,
+          allDay: true,
+        });
+      } else {
+        var startMinute = Math.floor(Math.random() * 24 * 60);
+        var endMinute = Math.floor(Math.random() * 180) + startMinute;
+        startTime = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate() + startDay,
+          0,
+          date.getMinutes() + startMinute
+        );
+        endTime = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate() + endDay,
+          0,
+          date.getMinutes() + endMinute
+        );
+        events.push({
+          title: 'Event - ' + i,
+          startTime: startTime,
+          endTime: endTime,
+          allDay: false,
+        });
+      }
+    }
+    this.eventSource = events;
+  }
+ 
+  removeEvents() {
+    this.eventSource = [];
+  }
+
+  addFaltaJustificada(){
+    var events=[];
+    var date = new Date();
+    var startDay=Math.floor(Math.random() * 90) - 45;
+    var endDay = startDay +1;
+    var startTime;
+    var endTime;
+    
+    startTime= new Date(
+      Date.UTC(
+        date.getUTCFullYear(),
+        date.getUTCMonth(),
+        date.getUTCDate() + startDay
+      )
+    );
+    endTime = new Date(
+      Date.UTC(
+        date.getUTCFullYear(),
+        date.getUTCMonth(),
+        date.getUTCDate() + endDay
+      )
+    );
+    
+    this.event = {
+      title: 'Falta Justificada',
+      desc: 'Presenta justificación',
+      startTime: startTime,
+      endTime: endTime,
+      allDay: true
+    };
+
+    events.push(this.event);
+    this.eventSource = events;
+
+    console.log(this.event);
+    this.db.collection(`users/`+this.userUid+"/faltas").add(this.event);
+  }
+
+  addFaltaInjustificada(){
+    var events=[];
+    var date = new Date();
+    var startDay=Math.floor(Math.random() * 90) - 45;
+    var endDay = startDay +1;
+    var startTime;
+    var endTime;
+    
+    startTime= new Date(
+      Date.UTC(
+        date.getUTCFullYear(),
+        date.getUTCMonth(),
+        date.getUTCDate() + startDay
+      )
+    );
+    endTime = new Date(
+      Date.UTC(
+        date.getUTCFullYear(),
+        date.getUTCMonth(),
+        date.getUTCDate() + endDay
+      )
+    );
+
+    this.event = {
+      title: 'Falta Injustificada',
+      desc: 'No presenta justificación',
+      startTime: startTime,
+      endTime: endTime,
+      allDay: true
+    }
+
+    events.push(this.event);
+    this.eventSource = events;
+
+
+    console.log(this.event);
+    this.db.collection(`users/`+this.userUid+"/faltas").add(this.event);
+  }
+
+  async openCalModal(){
+    const modal= await this.modalCtrl.create({
+      component: CalModalPage,
+      cssClass: 'cal-modal',
+      backdropDismiss: false
+    });
+
+    await modal.present();
+
+    modal.onDidDismiss().then((result) => {
+      if(result.data && result.data.event){
+        let event= result.data.event;
+        if(event.allDay){
+          let start= event.startTime;
+          event.startTime=new Date(
+            Date.UTC(
+              start.getUTCFullYear(),
+              start.getUTCMonth(),
+              start.getUTCDate(),
+            )
+          );
+          event.endTime=new Date(
+            Date.UTC(
+              start.getUTCFullYear(),
+              start.getUTCMonth(),
+              start.getUTCDate() +1,
+            )
+          );
+        }
+        this.eventSource.push(result.data.event);
+        this.myCal.loadEvents();
+      }
+    });
+  }
 }

@@ -32,6 +32,10 @@ export class AuthService {
         console.log('error on register user', error);
       }
     }
+
+    getUserAuth(){
+      return this.authFire.authState;
+    }
   
   
   

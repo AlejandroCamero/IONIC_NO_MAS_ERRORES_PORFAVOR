@@ -9,13 +9,13 @@
 </ion-item>
 <br>
 <ion-list>
- <ion-item *ngFor = "let todos of fichas">
- <u>Día</u><p>: </p>
- <ion-label><h2>{{todos.date}}</h2></ion-label>
- <u>Actividad</u><p>: </p>
- <ion-label><h2>{{todos.title}}</h2></ion-label>
+ <ion-item *ngFor = "let todo of fichas">
+    <u>Día</u><p>: </p>
+    <ion-label>{{todo.date}}</ion-label>
+    <u>Actividad</u><p>: </p>
+    <ion-label>{{todo.title}}</ion-label>
  </ion-item>
- </ion-list>
+</ion-list>
 
 <ion-button size="large" routerLink="/creacion">
 <ion-icon name="add-circle-outline" size="large"></ion-icon>
