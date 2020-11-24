@@ -1,4 +1,31 @@
 
-<ion-content>
+<ion-header>
 
+  <ion-toolbar no-border trasnlucent>
+    <ion-title>REGISTRO</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-card>
+ <ion-img src="/assets/img/fpdual.png"></ion-img>
+
+</ion-card>
+
+<ion-content padding>
+  <ion-item>
+    <ion-label>
+      Email
+    </ion-label>
+    <ion-input type="text" [(ngModel)]="user.email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      Password
+    </ion-label>
+  <ion-input type="text" [(ngModel)]="user.password"></ion-input>
+  </ion-item>
+  <ion-item-divider>
+    <ion-button size="medium" (click)="onRegister()">Guardar usuario</ion-button>
+    <ion-button size="medium" href="/login">Entrar</ion-button>
+  </ion-item-divider>
 </ion-content>
