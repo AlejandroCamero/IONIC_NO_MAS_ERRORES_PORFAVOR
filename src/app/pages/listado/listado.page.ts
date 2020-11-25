@@ -29,24 +29,31 @@ export class ListadoPage implements OnInit {
   }
 
   filtrarFechas(){
+
     this.todoservice.getFichas().subscribe( todos => {
 
       this.fichas2=todos;
+      this.fichasVer = [];
       let contador = 0;
       let contador2 = 0;
       while(todos.length>contador){
-
         if(this.fichas2[contador].date>= this.desde && this.fichas2[contador].date<=this.hasta){
 
           this.fichasVer[contador2]=this.fichas2[contador];
+          console.log(this.fichas2[contador].date);
+          console.log(contador);
           contador2=contador2+1;
         }
 
         contador=contador+1;
       }
 
+      console.log("antes de fichasVer");
+      console.log(contador);
+      this.fichasVer.lenght=contador2;
       this.fichas=this.fichasVer;
-      console.log(this.fichas);
+      console.log("después de fichasVer");
+      console.log(this.fichasVer);
       })
   }
 }
