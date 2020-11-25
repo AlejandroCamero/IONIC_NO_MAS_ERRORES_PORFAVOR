@@ -5,17 +5,15 @@
     <ion-back-button text="" icon="arrow-undo-circle-outline" defaultHref="index"></ion-back-button>
   </ion-buttons>
   <ion-buttons slot="end">
-    <ion-button (click)="openCalModal()">
-        <ion-icon name="add" slot="icon-only"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-  <ion-buttons slot="end">
    <ion-back-button text="" icon="log-out-outline" defaultHref="login" slot="end"></ion-back-button>
   </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+<ion-button expand="block" (click)="addFaltaJustificada()">Falta Justificada</ion-button>
+<ion-button expand="block" (click)="addFaltaInjustificada()">Falta Injustificada</ion-button>
 
 <h1 class="center">{{fecha}}</h1>
     <ion-row>
@@ -45,8 +43,7 @@
             >
     </calendar>
 
-<ion-button (click)="addFaltaJustificada()">Falta Justificada</ion-button>
-<ion-button (click)="addFaltaInjustificada()">Falta Injustificada</ion-button>
+
 
 
 </ion-content>
