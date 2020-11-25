@@ -20,13 +20,4 @@ export class TodoService {
         const datos = t.payload.doc.data() as todo;
         return datos;
       })}))}
-    
-  getFiltro(){
-
-    return this.db.collection('fichas').snapshotChanges().pipe(map ( fechas =>{
-
-      
-    }
-    ))
-  }
 }
