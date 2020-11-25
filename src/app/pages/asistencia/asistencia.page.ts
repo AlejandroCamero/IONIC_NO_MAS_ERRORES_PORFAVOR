@@ -1,5 +1,4 @@
 import { AuthService } from './../../services/auth.service';
-import { CalModalPage } from './../cal-modal/cal-modal.page';
 import { Component, OnInit, Pipe, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ModalController } from '@ionic/angular';
@@ -102,38 +101,5 @@ export class AsistenciaPage implements OnInit {
 		  this.db.collection('faltas').add(event);
   }
 
-  async openCalModal(){
-    const modal = await this.modalCtrl.create({
-      component: CalModalPage,
-      cssClass: 'cal-modal',
-      backdropDismiss: false
-    });
-
-    await modal.present();
-
-    modal.onDidDismiss().then((result) => {
-      if(result.data && result.data.event){
-        let event= result.data.event;
-        if(event.allDay){
-          let start= event.startTime;
-          event.startTime=new Date(
-            Date.UTC(
-              start.getUTCFullYear(),
-              start.getUTCMonth(),
-              start.getUTCDate(),
-            )
-          );
-          event.endTime=new Date(
-            Date.UTC(
-              start.getUTCFullYear(),
-              start.getUTCMonth(),
-              start.getUTCDate() + 1,
-            )
-          );
-        }
-        this.eventSource.push(result.data.event);
-        this.myCal.loadEvents();
-      }
-    });
-  }
+  
 }
