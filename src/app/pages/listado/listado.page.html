@@ -3,11 +3,11 @@
 <ion-content>
 <ion-item>
 <br>
-<ion-label>Desde</ion-label><ion-datetime placeholder="Fecha" value="{{desde}}"
-[(NgModel)]="desde" (ionChange)=filtrarFecha()></ion-datetime>
+<ion-label>Desde</ion-label><ion-datetime placeholder="Fecha"
+[(ngModel)]="desde" (ionChange)=filtrarFecha()></ion-datetime>
 
-<ion-label>Hasta</ion-label><ion-datetime placeholder="Fecha" value="{{hasta}}"
-[(NgModel)]="hasta"></ion-datetime>
+<ion-label>Hasta</ion-label><ion-datetime placeholder="Fecha"
+[(ngModel)]="hasta" (ionChange)=filtrarFecha()></ion-datetime>
 
 <ion-button (click)="filtrarFecha()">Buscar</ion-button>
 </ion-item>
