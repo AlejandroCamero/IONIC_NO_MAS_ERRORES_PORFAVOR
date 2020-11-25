@@ -32,11 +32,10 @@ export class CreacionPage implements OnInit {
   }
 
   onSubmitTemplate() {
-
     let event = {
       title: this.creacion.actividad,
       date: this.creacion.fecha,
-    };
+    }
 
     this.db.collection(`fichas`).add(event);
     console.log('Form submit');

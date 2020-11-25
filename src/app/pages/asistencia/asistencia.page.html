@@ -10,7 +10,7 @@
     </ion-button>
   </ion-buttons>
   <ion-buttons slot="end">
-    <ion-back-button text="" icon="close-circle-outline" defaultHref="login"></ion-back-button>
+   <ion-back-button text="" icon="log-out-outline" defaultHref="login" slot="end"></ion-back-button>
   </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -58,6 +58,7 @@
             [calendarMode]="calendar.mode"
             [currentDate]="calendar.currentDate"
             (onTitleChanged)="onViewTitleChanged($event)"
+            (onTimeSelected)="onTimeSelected($event)"
             >
     </calendar>
 

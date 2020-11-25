@@ -29,10 +29,9 @@ export class ListadoPage implements OnInit {
   }
 
   ngOnInit() {
-
     this.todoservice.getFichas().subscribe( todos => {
 
       this.fichas=todos;
       })
-    }
+  }
 }
