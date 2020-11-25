@@ -20,7 +20,7 @@ export class ListadoPage implements OnInit {
 
   desde: Date = new Date();
   hasta: Date = new Date();
-
+  mensajeError: string;
   ngOnInit() {
     this.todoservice.getFichas().subscribe( todos => {
 
@@ -34,9 +34,20 @@ export class ListadoPage implements OnInit {
 
       this.fichas2=todos;
       this.fichasVer = [];
+      this.mensajeError = null;
       let contador = 0;
       let contador2 = 0;
       while(todos.length>contador){
+
+        if(this.desde>this.hasta){
+
+          this.mensajeError="Error, la fecha izquierda (Desde) debe ser menor que la fecha derecha (Hasta)";
+          break;
+        }else if(contador2==0){
+
+          this.mensajeError="Error, introduzca los valores para el filtro";
+        }
+
         if(this.fichas2[contador].date>= this.desde && this.fichas2[contador].date<=this.hasta){
 
           this.fichasVer[contador2]=this.fichas2[contador];
