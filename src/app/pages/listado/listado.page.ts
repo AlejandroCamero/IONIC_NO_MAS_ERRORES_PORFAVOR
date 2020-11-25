@@ -43,7 +43,7 @@ export class ListadoPage implements OnInit {
 
           this.mensajeError="Error, la fecha izquierda (Desde) debe ser menor que la fecha derecha (Hasta)";
           break;
-        }else if(contador2==0){
+        }else if(this.fichasVer==[]){
 
           this.mensajeError="Error, introduzca los valores para el filtro";
         }
