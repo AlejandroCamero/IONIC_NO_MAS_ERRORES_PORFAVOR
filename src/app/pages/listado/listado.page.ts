@@ -43,28 +43,19 @@ export class ListadoPage implements OnInit {
 
           this.mensajeError="Error, la fecha izquierda (Desde) debe ser menor que la fecha derecha (Hasta)";
           break;
-        }else if(this.fichasVer==[]){
-
-          this.mensajeError="Error, introduzca los valores para el filtro";
         }
 
-        if(this.fichas2[contador].date>= this.desde && this.fichas2[contador].date<=this.hasta){
+        if(this.fichas2[contador].date<= this.hasta && this.fichas2[contador].date>= this.desde){
 
           this.fichasVer[contador2]=this.fichas2[contador];
-          console.log(this.fichas2[contador].date);
-          console.log(contador);
           contador2=contador2+1;
         }
 
         contador=contador+1;
       }
 
-      console.log("antes de fichasVer");
-      console.log(contador);
       this.fichasVer.lenght=contador2;
       this.fichas=this.fichasVer;
-      console.log("después de fichasVer");
-      console.log(this.fichasVer);
       })
   }
 }
