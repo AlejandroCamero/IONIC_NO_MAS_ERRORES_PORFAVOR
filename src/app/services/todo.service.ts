@@ -28,20 +28,6 @@ export class TodoService {
     }
       ))
   }
-
-  getFecha(){
-
-    return this.db.collection('fichas').snapshotChanges().pipe(map( dates =>{
-
-      return dates.map(t => {
-
-        const datos = t.payload.doc.data() as todo;
-        return datos.date;
-      }
-        )
-    }
-      ))
-  }
   getFaltas(){
 
     return this.db.collection('users/'+this.auth.getUserAuth()+"/faltas").snapshotChanges().pipe(map( todos =>{

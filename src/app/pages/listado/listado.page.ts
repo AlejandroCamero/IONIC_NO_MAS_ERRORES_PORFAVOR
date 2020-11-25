@@ -28,18 +28,9 @@ export class ListadoPage implements OnInit {
       })
   }
 
-  obtenerFechas(){
-
-    this.todoservice.getFecha().subscribe( dates => {
-
-      this.fechas=dates;
-    })
-  }
-
   filtrarFechas(){
     this.todoservice.getFichas().subscribe( todos => {
 
-      this.obtenerFechas();
       this.fichas2=todos;
       let contador = 0;
       let contador2 = 0;

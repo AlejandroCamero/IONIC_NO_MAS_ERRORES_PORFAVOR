@@ -3,13 +3,13 @@
 <ion-content>
 <ion-item>
 <br>
-<ion-label>Desde</ion-label><ion-datetime type="date" placeholder="Fecha" display-format="YYYY MMMM DD"
+<ion-datetime type="date" placeholder="Desde" display-format="YYYY MMMM DD"
 [(ngModel)]="desde"></ion-datetime>
 
-<ion-label>Hasta</ion-label><ion-datetime type="date" placeholder="Fecha" display-format="YYYY MMMM DD"
+<ion-datetime type="date" placeholder="Hasta" display-format="YYYY MMMM DD"
 [(ngModel)]="hasta"></ion-datetime>
 
-<ion-button (click)="filtrarFechas()">Buscar</ion-button>
+<ion-button (click)="filtrarFechas()">Filtrar</ion-button>
 </ion-item>
 <ion-list>
  <ion-item *ngFor = "let todo of fichas">
