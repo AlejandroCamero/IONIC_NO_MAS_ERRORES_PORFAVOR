@@ -14,11 +14,13 @@ export class CalModalPage implements OnInit {
     currentDate: new Date()
   };
   viewTitle: string;
-  userUid:string;
+  selectedDate = new Date();
+  userUid: string;
+
+  eventSource = [];
   
   event = {
     title: '',
-    desc: '',
     startTime: null,
     endTime: '',
     allDay: true
@@ -26,7 +28,19 @@ export class CalModalPage implements OnInit {
  
   modalReady = false;
  
-  constructor(private modalCtrl: ModalController,private db: AngularFirestore) { }
+  constructor(private modalCtrl: ModalController,private db: AngularFirestore) {
+    this.db.collection('faltas').snapshotChanges().subscribe(colSnap => {
+      this.eventSource = [];
+      colSnap.forEach(snap => {
+          const event: any = snap.payload.doc.data();
+          event.id = snap.payload.doc.id;
+          event.startTime = event.startTime.toDate();
+          event.endTime = event.endTime.toDate();
+          console.log(event);
+          this.eventSource.push(event);
+      });
+  }); 
+  }
  
   ngAfterViewInit() {
     setTimeout(() => {
@@ -34,12 +48,21 @@ export class CalModalPage implements OnInit {
     }, 0);
   }
  
-  save() {    
-    this.modalCtrl.dismiss({event: this.event})
-    this.db.collection(`users/`+this.userUid+'eventos').add(this.event);
-  }
+  save() {
+    const start = this.selectedDate;
+		const end = this.selectedDate;
+		end.setMinutes(end.getMinutes() + 60);
 
-  
+		const event = {
+		title: this.event.title,
+		startTime: start,
+		endTime: end,
+		allDay: false
+		};
+
+		this.db.collection('faltas').add(event);
+    this.modalCtrl.dismiss({event: this.event})
+  }
  
   onViewTitleChanged(title) {
     this.viewTitle = title;

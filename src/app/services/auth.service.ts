@@ -36,6 +36,8 @@ export class AuthService {
     getUserAuth(){
       return this.authFire.authState;
     }
+
+    
   
   
   

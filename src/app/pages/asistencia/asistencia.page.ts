@@ -1,21 +1,26 @@
 import { AuthService } from './../../services/auth.service';
 import { CalModalPage } from './../cal-modal/cal-modal.page';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Pipe, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ModalController } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
+import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
   selector: 'app-asistencia',
   templateUrl: './asistencia.page.html',
   styleUrls: ['./asistencia.page.scss'],
 })
+
 export class AsistenciaPage implements OnInit {
 
-  fecha='';
+  selectedDate = new Date();
+
+  fecha = '';
   eventSource = [];
-  viewTitle:string;
-  userUid:string;
+  viewTitle: string;
+  userUid: string;
+  public faltas: any = [];
 
   event = {
     title: '',
@@ -25,21 +30,34 @@ export class AsistenciaPage implements OnInit {
     allDay: true
   };
 
+  events=[];
+
   calendar = {
     mode: 'month',
     currentDate: new Date(),
   };
 
-  @ViewChild(CalendarComponent) myCal:CalendarComponent;
+  @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
-  constructor(private modalCtrl: ModalController,private db: AngularFirestore, private authservice: AuthService) {
-  
+  constructor(private modalCtrl: ModalController,private db: AngularFirestore, private authservice: AuthService, private todo: TodoService) {
+    this.db.collection('faltas').snapshotChanges().subscribe(colSnap => {
+			this.eventSource = [];
+			colSnap.forEach(snap => {
+          const event: any = snap.payload.doc.data();
+          event.id = snap.payload.doc.id;
+          event.startTime = event.startTime.toDate();
+          event.endTime = event.endTime.toDate();
+          console.log(event);
+          this.eventSource.push(event);
+			});
+    });
   }
 
   ngOnInit() {
-    this.authservice.getUserAuth().subscribe(user=>{
-      this.userUid=user.uid;
-    });
+  }
+
+  onTimeSelected(ev) {
+    this.selectedDate = ev.selectedTime;
   }
 
   next(){
@@ -51,153 +69,41 @@ export class AsistenciaPage implements OnInit {
   }
 
   onViewTitleChanged(title){
-    this.viewTitle=title;
-  }
-
-  createRandomEvents() {
-    var events = [];
-    for (var i = 0; i < 50; i += 1) {
-      var date = new Date();
-      var eventType = Math.floor(Math.random() * 2);
-      var startDay = Math.floor(Math.random() * 90) - 45;
-      var endDay = Math.floor(Math.random() * 2) + startDay;
-      var startTime;
-      var endTime;
-      if (eventType === 0) {
-        startTime = new Date(
-          Date.UTC(
-            date.getUTCFullYear(),
-            date.getUTCMonth(),
-            date.getUTCDate() + startDay
-          )
-        );
-        if (endDay === startDay) {
-          endDay += 1;
-        }
-        endTime = new Date(
-          Date.UTC(
-            date.getUTCFullYear(),
-            date.getUTCMonth(),
-            date.getUTCDate() + endDay
-          )
-        );
-        events.push({
-          title: 'All Day - ' + i,
-          startTime: startTime,
-          endTime: endTime,
-          allDay: true,
-        });
-      } else {
-        var startMinute = Math.floor(Math.random() * 24 * 60);
-        var endMinute = Math.floor(Math.random() * 180) + startMinute;
-        startTime = new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate() + startDay,
-          0,
-          date.getMinutes() + startMinute
-        );
-        endTime = new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate() + endDay,
-          0,
-          date.getMinutes() + endMinute
-        );
-        events.push({
-          title: 'Event - ' + i,
-          startTime: startTime,
-          endTime: endTime,
-          allDay: false,
-        });
-      }
-    }
-    this.eventSource = events;
-  }
- 
-  removeEvents() {
-    this.eventSource = [];
+    this.viewTitle = title;
   }
 
   addFaltaJustificada(){
-    var events=[];
-    var date = new Date();
-    var startDay=Math.floor(Math.random() * 90) - 45;
-    var endDay = startDay +1;
-    var startTime;
-    var endTime;
-    
-    startTime= new Date(
-      Date.UTC(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate() + startDay
-      )
-    );
-    endTime = new Date(
-      Date.UTC(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate() + endDay
-      )
-    );
-    
-    this.event = {
-      title: 'Falta Justificada',
-      desc: 'Presenta justificación',
-      startTime: startTime,
-      endTime: endTime,
-      allDay: true
-    };
+    const start = this.selectedDate;
+		const end = this.selectedDate;
+		end.setMinutes(end.getMinutes() + 60);
 
-    events.push(this.event);
-    this.eventSource = events;
+		  const event = {
+			title: 'Falta justificada',
+			startTime: start,
+			endTime: end,
+			allDay: false
+		};
 
-    console.log(this.event);
-    this.db.collection(`users/`+this.userUid+"/faltas").add(this.event);
+		  this.db.collection('faltas').add(event);
   }
 
   addFaltaInjustificada(){
-    var events=[];
-    var date = new Date();
-    var startDay=Math.floor(Math.random() * 90) - 45;
-    var endDay = startDay +1;
-    var startTime;
-    var endTime;
-    
-    startTime= new Date(
-      Date.UTC(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate() + startDay
-      )
-    );
-    endTime = new Date(
-      Date.UTC(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate() + endDay
-      )
-    );
+    const start = this.selectedDate;
+		  const end = this.selectedDate;
+		  end.setMinutes(end.getMinutes() + 60);
 
-    this.event = {
-      title: 'Falta Injustificada',
-      desc: 'No presenta justificación',
-      startTime: startTime,
-      endTime: endTime,
-      allDay: true
-    }
+		  const event = {
+			title: 'Falta injustificada',
+			startTime: start,
+			endTime: end,
+			allDay: false
+		};
 
-    events.push(this.event);
-    this.eventSource = events;
-
-
-    console.log(this.event);
-    this.db.collection(`users/`+this.userUid+"/faltas").add(this.event);
+		  this.db.collection('faltas').add(event);
   }
 
   async openCalModal(){
-    const modal= await this.modalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: CalModalPage,
       cssClass: 'cal-modal',
       backdropDismiss: false
@@ -221,7 +127,7 @@ export class AsistenciaPage implements OnInit {
             Date.UTC(
               start.getUTCFullYear(),
               start.getUTCMonth(),
-              start.getUTCDate() +1,
+              start.getUTCDate() + 1,
             )
           );
         }

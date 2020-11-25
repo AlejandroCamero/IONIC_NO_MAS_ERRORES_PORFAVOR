@@ -22,10 +22,9 @@ export class ListadoPage implements OnInit {
   constructor(public authservice : AuthService, public todoservice : TodoService) { }
 
   ngOnInit() {
-
     this.todoservice.getFichas().subscribe( todos => {
 
       this.fichas=todos;
       })
-    }
+  }
 }
