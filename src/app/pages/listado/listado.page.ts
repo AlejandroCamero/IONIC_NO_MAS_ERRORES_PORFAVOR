@@ -15,11 +15,18 @@ export interface todo{
 
 export class ListadoPage implements OnInit {
 
-  fecha1='';
-  fecha2='';
   public fichas :any = [];
 
   constructor(public authservice : AuthService, public todoservice : TodoService) { }
+
+  desde: Date = new Date();
+  hasta: Date = new Date();
+
+  filtrarFecha(){
+
+    console.log(this.desde);
+    console.log(this.hasta);
+  }
 
   ngOnInit() {
     this.todoservice.getFichas().subscribe( todos => {

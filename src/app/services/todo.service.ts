@@ -11,6 +11,7 @@ export class TodoService {
 
   constructor(private db : AngularFirestore, private auth: AuthService) { }
 
+  fecha1 : Date;
   getFichas(){
 
     return this.db.collection('fichas').snapshotChanges().pipe(map( todos =>{

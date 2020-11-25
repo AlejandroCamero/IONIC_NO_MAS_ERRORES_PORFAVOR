@@ -1,11 +1,16 @@
 <app-header titulo="Listado"></app-header>
 
 <ion-content>
+<ion-item>
 <br>
-<p>Desde <input type="date" name="fecha1">
-<br>
-<br>
-Hasta <input type="date" name="fecha2"></p>
+<ion-label>Desde</ion-label><ion-datetime placeholder="Fecha" value="{{desde}}"
+[(NgModel)]="desde" (ionChange)=filtrarFecha()></ion-datetime>
+
+<ion-label>Hasta</ion-label><ion-datetime placeholder="Fecha" value="{{hasta}}"
+[(NgModel)]="hasta"></ion-datetime>
+
+<ion-button (click)="filtrarFecha()">Buscar</ion-button>
+</ion-item>
 <ion-list>
  <ion-item *ngFor = "let todo of fichas">
     <u>Día</u><p>: </p>
@@ -14,7 +19,6 @@ Hasta <input type="date" name="fecha2"></p>
     <ion-label>{{todo.title}}</ion-label>
  </ion-item>
 </ion-list>
-
 <ion-button size="large" routerLink="/creacion">
 <ion-icon name="add-circle-outline" size="large"></ion-icon>
 </ion-button>
